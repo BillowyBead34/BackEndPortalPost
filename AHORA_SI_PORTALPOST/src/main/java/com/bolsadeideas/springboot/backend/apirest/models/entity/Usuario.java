@@ -1,5 +1,5 @@
 package com.bolsadeideas.springboot.backend.apirest.models.entity;
-
+//187
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,198 +25,313 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 public class Usuario implements Serializable {
 
+	//@OneToOne(mappedBy="User", fetch=FetchType.LAZY); este se meteria aqui si desearamos saber ambos lados, tanto user como transaccion
 	@Id
-	@Column(name="UserId")
+	@Column(name="user_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long UserId;
+	private Long id;
 	
-	@Column(name="Identification", unique = true, length = 20)
-	private String Identification;
+	@Column(name="identification", unique = true, length = 20)
+	private String identification;
 	
-	@Column(name="UserName", unique = true, length = 20)
-	private String UserName;
+	@Column(name="username", unique = true, length = 20)
+	private String username;
 
-	@Column(name="Password", length = 60)
-	private String Password;
+	@Column(name="password", length = 60)
+	private String password;
 
-	@Column(name="Names", length = 60)
-	private String Names;
+	@Column(name="names", length = 60)
+	private String names;
 	
-	@Column(name="SurNames", length = 20)
-	private String Surnames;
+	@Column(name="surnames", length = 20)
+	private String surnames;
 
-	@Column(name="Email", unique = true)
-	private String Email;
+	@Column(name="email", unique = true)
+	private String email;
 	
-	@Column(name="Avatar")
-	private String Avatar;
+	@Column(name="avatar")
+	private String avatar;
 	
 	@NotNull(message ="no puede estar vacio")
-	@Column(name="CreatedAt")
+	@Column(name="createdat")
 	@Temporal(TemporalType.DATE)
-	private Date CreatedAt;
+	private Date createdat;
 	
 	@NotNull(message ="no puede estar vacio")
-	@Column(name="ModifiedAt")
+	@Column(name="modifiedat")
 	@Temporal(TemporalType.DATE)
-	private Date ModifiedAt;
+	private Date modifiedat;
 	
 	@NotEmpty(message ="no puede estar vacio")
-	@Column(name="LastLogin",nullable=false)
+	@Column(name="lastlogin",nullable=false)
 	@Temporal(TemporalType.DATE)
-	private Date Lastlogin;
+	private Date lastlogin;
+
+	@Column(name="enabled")
+	private Boolean enabled;
 
 	@ManyToOne
-	private Status StatusId;
-
-	@ManyToOne
-	private Role RoleId;
+	private Role role_id;
 	
 	@OneToMany( targetEntity=Business.class )
-	private List Businesslist;
+	private List business_id;
 	
 	
 
-	public Usuario() {
-		super();
+	
+
+	public Long getUser_id() {
+		return id;
 	}
 
-	public Usuario(Long userId, String identification, String userName, String password, String names, String surnames,
-			String email, String avatar, @NotNull(message = "no puede estar vacio") Date createdAt,
-			@NotNull(message = "no puede estar vacio") Date modifiedAt,
-			@NotEmpty(message = "no puede estar vacio") Date lastlogin, Status statusId, Role roleId,
-			List businesslist) {
-		super();
-		UserId = userId;
-		Identification = identification;
-		UserName = userName;
-		Password = password;
-		Names = names;
-		Surnames = surnames;
-		Email = email;
-		Avatar = avatar;
-		CreatedAt = createdAt;
-		ModifiedAt = modifiedAt;
-		Lastlogin = lastlogin;
-		StatusId = statusId;
-		RoleId = roleId;
-		Businesslist = businesslist;
+
+
+
+
+	public void setUser_id(Long user_id) {
+		this.id = user_id;
 	}
 
-	public Long getUserId() {
-		return UserId;
-	}
 
-	public void setUserId(Long userId) {
-		UserId = userId;
-	}
+
+
 
 	public String getIdentification() {
-		return Identification;
+		return identification;
 	}
+
+
+
+
 
 	public void setIdentification(String identification) {
-		Identification = identification;
+		this.identification = identification;
 	}
 
-	public String getUserName() {
-		return UserName;
-	}
 
-	public void setUserName(String userName) {
-		UserName = userName;
-	}
+
 
 	public String getPassword() {
-		return Password;
+		return password;
 	}
+
+
+
+
 
 	public void setPassword(String password) {
-		Password = password;
+		this.password = password;
 	}
+
+
+
+
 
 	public String getNames() {
-		return Names;
+		return names;
 	}
+
+
+
+
 
 	public void setNames(String names) {
-		Names = names;
+		this.names = names;
 	}
+
+
+
+
 
 	public String getSurnames() {
-		return Surnames;
+		return surnames;
 	}
+
+
+
+
 
 	public void setSurnames(String surnames) {
-		Surnames = surnames;
+		this.surnames = surnames;
 	}
+
+
+
+
 
 	public String getEmail() {
-		return Email;
+		return email;
 	}
+
+
+
+
 
 	public void setEmail(String email) {
-		Email = email;
+		this.email = email;
 	}
+
+
+
+
 
 	public String getAvatar() {
-		return Avatar;
+		return avatar;
 	}
+
+
+
+
 
 	public void setAvatar(String avatar) {
-		Avatar = avatar;
+		this.avatar = avatar;
 	}
 
-	public Date getCreatedAt() {
-		return CreatedAt;
+
+
+
+
+	public Date getCreatedat() {
+		return createdat;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		CreatedAt = createdAt;
+
+
+
+
+	public void setCreatedat(Date createdat) {
+		this.createdat = createdat;
 	}
 
-	public Date getModifiedAt() {
-		return ModifiedAt;
+
+
+
+
+	public Date getModifiedat() {
+		return modifiedat;
 	}
 
-	public void setModifiedAt(Date modifiedAt) {
-		ModifiedAt = modifiedAt;
+
+
+
+
+	public void setModifiedat(Date modifiedat) {
+		this.modifiedat = modifiedat;
 	}
+
+
+
+
 
 	public Date getLastlogin() {
-		return Lastlogin;
+		return lastlogin;
 	}
+
+
+
+
 
 	public void setLastlogin(Date lastlogin) {
-		Lastlogin = lastlogin;
+		this.lastlogin = lastlogin;
 	}
 
-	public Status getStatusId() {
-		return StatusId;
+
+
+
+	public Boolean getEnabled() {
+		return enabled;
 	}
 
-	public void setStatusId(Status statusId) {
-		StatusId = statusId;
+
+
+
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
-	public Role getRoleId() {
-		return RoleId;
+
+
+
+
+	public Role getRole_id() {
+		return role_id;
 	}
 
-	public void setRoleId(Role roleId) {
-		RoleId = roleId;
+
+
+
+
+	public void setRole_id(Role role_id) {
+		this.role_id = role_id;
 	}
 
-	public List getBusinesslist() {
-		return Businesslist;
+
+
+
+
+	
+
+
+
+
+
+	public Long getId() {
+		return id;
 	}
 
-	public void setBusinesslist(List businesslist) {
-		Businesslist = businesslist;
+
+
+
+
+	public void setId(Long id) {
+		this.id = id;
 	}
+
+
+
+
+
+	public String getUsername() {
+		return username;
+	}
+
+
+
+
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+
+
+
+
+	public List getBusiness_id() {
+		return business_id;
+	}
+
+
+
+
+
+	public void setBusiness_id(List business_id) {
+		this.business_id = business_id;
+	}
+
+
+
+
+
+
+
+
+
+
 
 	/**
 	 * 

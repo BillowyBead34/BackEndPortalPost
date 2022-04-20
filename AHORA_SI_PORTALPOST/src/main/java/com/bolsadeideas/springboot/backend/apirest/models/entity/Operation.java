@@ -17,31 +17,42 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "Operation")
+@Table(name = "operation")
 public class Operation implements Serializable {
 
 	@Id
+	@Column(name="operation_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long OperationId;
+	private Long id;
 
-	@Column(unique = true, length = 20)
-	private String OperationName;
+	@Column(name="operation_name",unique = true, length = 20)
+	private String operationname;
 
-	public Long getOperationId() {
-		return OperationId;
+	
+
+	public Long getOperation_id() {
+		return id;
 	}
 
-	public void setOperationId(Long operationId) {
-		OperationId = operationId;
+
+
+	public void setOperation_id(Long operation_id) {
+		this.id = operation_id;
 	}
 
-	public String getOperationName() {
-		return OperationName;
+
+
+	public String getOperationname() {
+		return operationname;
 	}
 
-	public void setOperationName(String operationName) {
-		OperationName = operationName;
+
+
+	public void setOperationname(String operationname) {
+		this.operationname = operationname;
 	}
+
+
 
 	/**
 	 * 

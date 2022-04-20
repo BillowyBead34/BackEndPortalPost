@@ -1,34 +1,17 @@
-/* Populate tabla clientes */
+-- SE CREAN LOS PERMISOS QUE PUEDE TENER UN USUARIO --
+INSERT INTO operation (operation_id, operationname) VALUES (1, 'P2C');
+INSERT INTO operation (operation_id, operationname) VALUES (2, 'C2P');
 
-INSERT INTO regiones (id, nombre) VALUES (1, 'Sudamérica');
-INSERT INTO regiones (id, nombre) VALUES (2, 'Centroamérica');
-INSERT INTO regiones (id, nombre) VALUES (3, 'Norteamérica');
-INSERT INTO regiones (id, nombre) VALUES (4, 'Europa');
-INSERT INTO regiones (id, nombre) VALUES (5, 'Asia');
-INSERT INTO regiones (id, nombre) VALUES (6, 'Africa');
-INSERT INTO regiones (id, nombre) VALUES (7, 'Oceanía');
-INSERT INTO regiones (id, nombre) VALUES (8, 'Antártida');
+INSERT INTO role (role_id, role_name, role_description, createdat, modifiedat) VALUES(1, 'Admin', 'Usuario autorizado para realizar todas las operaciones', sysdate, sysdate);
+INSERT INTO role (role_id, role_name, role_description, createdat, modifiedat) VALUES(2, 'Usuario de Vueltos', 'Usuario solo para dar vueltos', sysdate, sysdate);
 
-INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(1, 'Andrés', 'Guzmán', 'profesor@bolsadeideas.com', '2018-01-01');
-INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(2, 'Mr. John', 'Doe', 'john.doe@gmail.com', '2018-01-02');
-INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(4, 'Linus', 'Torvalds', 'linus.torvalds@gmail.com', '2018-01-03');
-INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(4, 'Rasmus', 'Lerdorf', 'rasmus.lerdorf@gmail.com', '2018-01-04');
-INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(4, 'Erich', 'Gamma', 'erich.gamma@gmail.com', '2018-02-01');
-INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(3, 'Richard', 'Helm', 'richard.helm@gmail.com', '2018-02-10');
-INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(3, 'Ralph', 'Johnson', 'ralph.johnson@gmail.com', '2018-02-18');
-INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(3, 'John', 'Vlissides', 'john.vlissides@gmail.com', '2018-02-28');
-INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(3, 'Dr. James', 'Gosling', 'james.gosling@gmail.com', '2018-03-03');
-INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(5, 'Magma', 'Lee', 'magma.lee@gmail.com', '2018-03-04');
-INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(6, 'Tornado', 'Roe', 'tornado.roe@gmail.com', '2018-03-05');
-INSERT INTO clientes (region_id, nombre, apellido, email, create_at) VALUES(7, 'Jade', 'Doe', 'jane.doe@gmail.com', '2018-03-06');
+INSERT INTO role_operation (rolei_d, operation_id) VALUES (1, 1);
+INSERT INTO role_operation (role_id, operation_id) VALUES (1, 2);
+INSERT INTO role_operation (role_id, operation_id) VALUES (2, 1);
 
-/* Creamos algunos usuarios con sus roles */
-INSERT INTO `usuarios` (username, password, enabled, nombre, apellido, email) VALUES ('andres','$2a$10$C3Uln5uqnzx/GswADURJGOIdBqYrly9731fnwKDaUdBkt/M3qvtLq',1, 'Andres', 'Guzman','profesor@bolsadeideas.com');
-INSERT INTO `usuarios` (username, password, enabled, nombre, apellido, email) VALUES ('admin','$2a$10$RmdEsvEfhI7Rcm9f/uZXPebZVCcPC7ZXZwV51efAvMAp1rIaRAfPK',1, 'John', 'Doe','jhon.doe@bolsadeideas.com');
+-- SE CREA LA EMPRESA --
+INSERT INTO business (business_id, rif, business_name, mail_business, createdat, modifiedat) VALUES(1, '264747178', 'Deverik_ORG', 'presidencia@deverik.com.ve', 2022-04-20, 2022-04-20);
 
-INSERT INTO `roles` (nombre) VALUES ('ROLE_USER');
-INSERT INTO `roles` (nombre) VALUES ('ROLE_ADMIN');
-
-INSERT INTO `usuarios_roles` (usuario_id, role_id) VALUES (1, 1);
-INSERT INTO `usuarios_roles` (usuario_id, role_id) VALUES (2, 2);
-INSERT INTO `usuarios_roles` (usuario_id, role_id) VALUES (2, 1);
+-- SE CREAN LOS USUARIOS CON SU ROLE Y EMPRESA --
+INSERT INTO user (user_id, identification, username, password, names, surnames, email, avatar, createdat, modifiedat, lastlogin, enabled, role_id, business_id) VALUES(1, '26474717', 'EPACHECOG', '$2a$10$C3Uln5uqnzx/GswADURJGOIdBqYrly9731fnwKDaUdBkt/M3qvtLq', 'Erikson Jeomar', 'Pacheco Gimenez', 'epachecog@gmail.com', 'upload/user/epachecog/imagen.png', '2018-01-01', '2018-01-01', '2018-01-01', true, 1, 1);
+INSERT INTO user (user_id, identification, username, password, names, surnames, email, avatar, createdat, modifiedat, lastlogin, enabled, role_id, business_id) VALUES(2, '12345678', 'MARTINVEG', '$2a$10$RmdEsvEfhI7Rcm9f/uZXPebZVCcPC7ZXZwV51efAvMAp1rIaRAfPK', 'Martin von', 'Vega Martinez', 'Upamarvega@gmail.com', 'upload/user/chacrlon/otraimg.jpg', '2022-01-01', '2022-01-01', '2022-01-01', true, 1, 1);

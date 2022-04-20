@@ -14,93 +14,107 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="Business")
+@Table(name="business")
 public class Business implements Serializable{
 
 	@Id
+	@Column(name="business_id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long BusinessId;
+	private Long id;
 	
 	@NotNull(message ="no puede estar vacio")
-	@Column(name="RIF",unique=true, length=20)
-	private String RIF;
+	@Column(name="rif",unique=true, length=20)
+	private String rif;
 	
 	@NotNull(message ="no puede estar vacio")
-	@Column(name="BusinessName",unique=true, length=20)
-	private String BusinessName;
+	@Column(name="business_name",unique=true, length=20)
+	private String businessname;
 	
-	@Column(name="MailBusiness", unique = true)
-	private String MailBusiness;
+	@Column(name="mail_business", unique = true)
+	private String mailbusiness;
 	
 	@NotNull(message ="no puede estar vacio")
-	@Column(name="CreatedAt")
+	@Column(name="createdat")
 	@Temporal(TemporalType.DATE)
-	private Date CreatedAt;
+	private Date createdat;
 	
 	@NotNull(message ="no puede estar vacio")
-	@Column(name="ModifiedAt")
+	@Column(name="modifiedat")
 	@Temporal(TemporalType.DATE)
-	private Date ModifiedAt;
+	private Date modifiedat;
 
 
-	public Long getBusinessId() {
-		return BusinessId;
+
+	public Long getBusiness_id() {
+		return id;
 	}
 
 
-	public void setBusinessId(Long businessId) {
-		BusinessId = businessId;
+
+	public void setBusiness_id(Long business_id) {
+		this.id = business_id;
 	}
 
 
-	public String getRIF() {
-		return RIF;
+
+	public String getRif() {
+		return rif;
 	}
 
 
-	public void setRIF(String RIF) {
-		RIF = RIF;
+
+	public void setRif(String rif) {
+		this.rif = rif;
 	}
 
 
-	public String getBusinessName() {
-		return BusinessName;
+
+	public String getBusinessname() {
+		return businessname;
 	}
 
 
-	public void setBusinessName(String businessName) {
-		BusinessName = businessName;
+
+	public void setBusinessname(String businessname) {
+		this.businessname = businessname;
 	}
 
 
-	public String getMailBusiness() {
-		return MailBusiness;
+
+	public String getMailbusiness() {
+		return mailbusiness;
 	}
 
 
-	public void setMailBusiness(String mailBusiness) {
-		MailBusiness = mailBusiness;
+
+	public void setMailbusiness(String mailbusiness) {
+		this.mailbusiness = mailbusiness;
 	}
 
 
-	public Date getCreatedAt() {
-		return CreatedAt;
+
+	public Date getCreatedat() {
+		return createdat;
 	}
 
 
-	public void setCreatedAt(Date createdAt) {
-		CreatedAt = createdAt;
+
+	public void setCreatedat(Date createdat) {
+		this.createdat = createdat;
 	}
 
 
-	public Date getModifiedAt() {
-		return ModifiedAt;
+
+	public Date getModifiedat() {
+		return modifiedat;
 	}
 
 
-	public void setModifiedAt(Date modifiedAt) {
-		ModifiedAt = modifiedAt;
+
+	public void setModifiedat(Date modifiedat) {
+		this.modifiedat = modifiedat;
 	}
+
 
 
 	/**

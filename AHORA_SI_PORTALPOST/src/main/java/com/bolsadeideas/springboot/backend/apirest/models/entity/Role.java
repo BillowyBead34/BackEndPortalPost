@@ -21,84 +21,99 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="Role")
+@Table(name="role")
 public class Role implements Serializable{
 
 	@Id
+	@Column(name="role_id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long RoleId;
+	private Long id;
 	
 	@NotNull(message ="no puede estar vacio")
-	@Column(name="RoleName",unique=true, length=20)
-	private String RoleName;
+	@Column(name="role_name",unique=true, length=20)
+	private String rolename;
 	
 	@NotNull(message ="no puede estar vacio")
-	@Column(name="RoleDescription", length=20)
-	private String RoleDescription;
+	@Column(name="role_description", length=20)
+	private String roledescription;
 	
 	@NotNull(message ="no puede estar vacio")
-	@Column(name="CreatedAt")
+	@Column(name="createdat")
 	@Temporal(TemporalType.DATE)
-	private Date CreatedAt;
+	private Date createdat;
 	
 	@NotNull(message ="no puede estar vacio")
-	@Column(name="ModifiedAt")
+	@Column(name="modifiedat")
 	@Temporal(TemporalType.DATE)
-	private Date ModifiedAt;
+	private Date modifiedat;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name="Role_Operation", joinColumns= @JoinColumn(name="RoleId"),
-	inverseJoinColumns=@JoinColumn(name="OperationId"),
-	uniqueConstraints= {@UniqueConstraint(columnNames= {"RoleId", "OperationId"})})
-	private List<Operation> Operation;
+	@JoinTable(name="role_operation", joinColumns= @JoinColumn(name="role_id"),
+	inverseJoinColumns=@JoinColumn(name="operation_id"),
+	uniqueConstraints= {@UniqueConstraint(columnNames= {"role_id", "operation_id"})})
+	private List<Operation> operation;
 
-	public Long getRoleId() {
-		return RoleId;
+	
+	public Long getRoleid() {
+		return id;
 	}
 
-	public void setRoleId(Long roleId) {
-		RoleId = roleId;
+
+	public void setRoleid(Long roleid) {
+		this.id = roleid;
 	}
 
-	public String getRoleName() {
-		return RoleName;
+
+	public String getRolename() {
+		return rolename;
 	}
 
-	public void setRoleName(String roleName) {
-		RoleName = roleName;
+
+	public void setRolename(String rolename) {
+		this.rolename = rolename;
 	}
 
-	public String getRoleDescription() {
-		return RoleDescription;
+
+	public String getRoledescription() {
+		return roledescription;
 	}
 
-	public void setRoleDescription(String roleDescription) {
-		RoleDescription = roleDescription;
+
+	public void setRoledescription(String roledescription) {
+		this.roledescription = roledescription;
 	}
 
-	public Date getCreatedAt() {
-		return CreatedAt;
+
+	public Date getCreatedat() {
+		return createdat;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		CreatedAt = createdAt;
+
+	public void setCreatedat(Date createdat) {
+		this.createdat = createdat;
 	}
 
-	public Date getModifiedAt() {
-		return ModifiedAt;
+
+	public Date getModifiedat() {
+		return modifiedat;
 	}
 
-	public void setModifiedAt(Date modifiedAt) {
-		ModifiedAt = modifiedAt;
+
+	public void setModifiedat(Date modifiedat) {
+		this.modifiedat = modifiedat;
 	}
+
 
 	public List<Operation> getOperation() {
-		return Operation;
+		return operation;
 	}
 
+
 	public void setOperation(List<Operation> operation) {
-		Operation = operation;
+		this.operation = operation;
 	}
+
+
 	/**
 	 * 
 	 */

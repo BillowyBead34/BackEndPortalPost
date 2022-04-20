@@ -34,63 +34,68 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bolsadeideas.springboot.backend.apirest.models.entity.Business;
 import com.bolsadeideas.springboot.backend.apirest.models.entity.Cliente;
 import com.bolsadeideas.springboot.backend.apirest.models.entity.Region;
+import com.bolsadeideas.springboot.backend.apirest.models.entity.Role;
+import com.bolsadeideas.springboot.backend.apirest.models.entity.Status;
+import com.bolsadeideas.springboot.backend.apirest.models.entity.Usuario;
 import com.bolsadeideas.springboot.backend.apirest.models.services.IClienteService;
 import com.bolsadeideas.springboot.backend.apirest.models.services.IUploadFileService;
+import com.bolsadeideas.springboot.backend.apirest.models.services.IUsuarioService;
 
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api")
 public class ClienteRestController {
-
+	
 	@Autowired
-	private IClienteService clienteService;
+	private IUsuarioService usuarioService;
 	
 	@Autowired
 	private IUploadFileService uploadService;
 	
 	// private final Logger log = LoggerFactory.getLogger(ClienteRestController.class);
 
-	@GetMapping("/clientes")
-	public List<Cliente> index() {
-		return clienteService.findAll();
+	@GetMapping("/usuarios")
+	public List<Usuario> index() {
+		return usuarioService.findAll();
 	}
 	
-	@GetMapping("/clientes/page/{page}")
-	public Page<Cliente> index(@PathVariable Integer page) {
+	@GetMapping("/usuarios/page/{page}")
+	public Page<Usuario> index(@PathVariable Integer page) {
 		Pageable pageable = PageRequest.of(page, 4);
-		return clienteService.findAll(pageable);
+		return usuarioService.findAll(pageable);
 	}
 	
 	@Secured({"ROLE_ADMIN", "ROLE_USER"})
-	@GetMapping("/clientes/{id}")
+	@GetMapping("/usuarios/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
-		Cliente cliente = null;
+		Usuario usuario = null;
 		Map<String, Object> response = new HashMap<>();
 		
 		try {
-			cliente = clienteService.findById(id);
+			usuario = usuarioService.findById(id);
 		} catch(DataAccessException e) {
 			response.put("mensaje", "Error al realizar la consulta en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		if(cliente == null) {
-			response.put("mensaje", "El cliente ID: ".concat(id.toString().concat(" no existe en la base de datos!")));
+		if(usuario == null) {
+			response.put("mensaje", "El usuario ID: ".concat(id.toString().concat(" no existe en la base de datos!")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
 	
 	@Secured("ROLE_ADMIN")
-	@PostMapping("/clientes")
-	public ResponseEntity<?> create(@Valid @RequestBody Cliente cliente, BindingResult result) {
+	@PostMapping("/usuarios")
+	public ResponseEntity<?> create(@Valid @RequestBody Usuario usuario, BindingResult result) {
 		
-		Cliente clienteNew = null;
+		Usuario usuarioNew = null;
 		Map<String, Object> response = new HashMap<>();
 		
 		if(result.hasErrors()) {
@@ -105,7 +110,7 @@ public class ClienteRestController {
 		}
 		
 		try {
-			clienteNew = clienteService.save(cliente);
+			usuarioNew = usuarioService.save(usuario);
 		} catch(DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -113,17 +118,17 @@ public class ClienteRestController {
 		}
 		
 		response.put("mensaje", "El cliente ha sido creado con éxito!");
-		response.put("cliente", clienteNew);
+		response.put("cliente", usuarioNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
 	@Secured("ROLE_ADMIN")
-	@PutMapping("/clientes/{id}")
-	public ResponseEntity<?> update(@Valid @RequestBody Cliente cliente, BindingResult result, @PathVariable Long id) {
+	@PutMapping("/usuarios/{id}")
+	public ResponseEntity<?> update(@Valid @RequestBody Usuario usuario, BindingResult result, @PathVariable Long id) {
 
-		Cliente clienteActual = clienteService.findById(id);
+		Usuario usuarioActual = usuarioService.findById(id);
 
-		Cliente clienteUpdated = null;
+		Usuario usuarioUpdated = null;
 
 		Map<String, Object> response = new HashMap<>();
 
@@ -138,7 +143,7 @@ public class ClienteRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
 		
-		if (clienteActual == null) {
+		if (usuarioActual == null) {
 			response.put("mensaje", "Error: no se pudo editar, el cliente ID: "
 					.concat(id.toString().concat(" no existe en la base de datos!")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
@@ -146,13 +151,21 @@ public class ClienteRestController {
 
 		try {
 
-			clienteActual.setApellido(cliente.getApellido());
-			clienteActual.setNombre(cliente.getNombre());
-			clienteActual.setEmail(cliente.getEmail());
-			clienteActual.setCreateAt(cliente.getCreateAt());
-			clienteActual.setRegion(cliente.getRegion());
+			usuarioActual.setIdentification(usuario.getIdentification());
+			usuarioActual.setUsername(usuario.getUsername());
+			usuarioActual.setPassword(usuario.getPassword());
+			usuarioActual.setNames(usuario.getNames());
+			usuarioActual.setSurnames(usuario.getSurnames());
+			usuarioActual.setEmail(usuario.getEmail());	
+			usuarioActual.setAvatar(usuario.getAvatar());
+			usuarioActual.setCreatedat(usuario.getCreatedat());
+			usuarioActual.setModifiedat(usuario.getModifiedat());
+			usuarioActual.setLastlogin(usuario.getLastlogin());
+			usuarioActual.setEnabled(usuario.getEnabled());
+			usuarioActual.setRole_id(usuario.getRole_id());
+			usuarioActual.setBusiness_id(usuario.getBusiness_id());
 
-			clienteUpdated = clienteService.save(clienteActual);
+			usuarioUpdated = usuarioService.save(usuarioActual);
 
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al actualizar el cliente en la base de datos");
@@ -160,27 +173,27 @@ public class ClienteRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		response.put("mensaje", "El cliente ha sido actualizado con éxito!");
-		response.put("cliente", clienteUpdated);
+		response.put("mensaje", "El usuario ha sido actualizado con éxito!");
+		response.put("usuario", usuarioUpdated);
 
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
 	@Secured("ROLE_ADMIN")
-	@DeleteMapping("/clientes/{id}")
+	@DeleteMapping("/usuarios/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		
 		Map<String, Object> response = new HashMap<>();
 		
 		try {
-			Cliente cliente = clienteService.findById(id);
-			String nombreFotoAnterior = cliente.getFoto();
+			Usuario usuario = usuarioService.findById(id);
+			String nombreFotoAnterior = usuario.getAvatar();
 			
 			uploadService.eliminar(nombreFotoAnterior);
 			
-		    clienteService.delete(id);
+		    usuarioService.delete(id);
 		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al eliminar el cliente de la base de datos");
+			response.put("mensaje", "Error al eliminar el usuario de la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -191,11 +204,11 @@ public class ClienteRestController {
 	}
 	
 	@Secured({"ROLE_ADMIN", "ROLE_USER"})
-	@PostMapping("/clientes/upload")
+	@PostMapping("/usuarios/upload")
 	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id){
 		Map<String, Object> response = new HashMap<>();
 		
-		Cliente cliente = clienteService.findById(id);
+		Usuario usuario = usuarioService.findById(id);
 		
 		if(!archivo.isEmpty()) {
 
@@ -203,20 +216,20 @@ public class ClienteRestController {
 			try {
 				nombreArchivo = uploadService.copiar(archivo);
 			} catch (IOException e) {
-				response.put("mensaje", "Error al subir la imagen del cliente");
+				response.put("mensaje", "Error al subir la imagen del usuario");
 				response.put("error", e.getMessage().concat(": ").concat(e.getCause().getMessage()));
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			
-			String nombreFotoAnterior = cliente.getFoto();
+			String nombreFotoAnterior = usuario.getAvatar();
 			
 			uploadService.eliminar(nombreFotoAnterior);
 						
-			cliente.setFoto(nombreArchivo);
+			usuario.setAvatar(nombreArchivo);
 			
-			clienteService.save(cliente);
+			usuarioService.save(usuario);
 			
-			response.put("cliente", cliente);
+			response.put("usuario", usuario);
 			response.put("mensaje", "Has subido correctamente la imagen: " + nombreArchivo);
 			
 		}
@@ -241,9 +254,23 @@ public class ClienteRestController {
 		return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
 	}
 	
+	/*
 	@Secured("ROLE_ADMIN")
-	@GetMapping("/clientes/regiones")
-	public List<Region> listarRegiones(){
-		return clienteService.findAllRegiones();
+	@GetMapping("/usuarios/status")
+	public List<Status> listarStatus(){
+		return usuarioService.findAllStatus();
+	}
+	*/
+	
+	@Secured("ROLE_ADMIN")
+	@GetMapping("/usuarios/role")
+	public List<Role> listarRole(){
+		return usuarioService.findAllRoles();
+	}
+	
+	@Secured("ROLE_ADMIN")
+	@GetMapping("/usuarios/business")
+	public List<Business> listarBusinesss(){
+		return usuarioService.findAllBusiness();
 	}
 }
