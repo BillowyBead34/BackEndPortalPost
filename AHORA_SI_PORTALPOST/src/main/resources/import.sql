@@ -5,7 +5,7 @@ INSERT INTO operation (operation_id, operationname) VALUES (2, 'C2P');
 INSERT INTO role (role_id, role_name, role_description, createdat, modifiedat) VALUES(1, 'Admin', 'Usuario autorizado para realizar todas las operaciones', sysdate, sysdate);
 INSERT INTO role (role_id, role_name, role_description, createdat, modifiedat) VALUES(2, 'Usuario de Vueltos', 'Usuario solo para dar vueltos', sysdate, sysdate);
 
-INSERT INTO role_operation (rolei_d, operation_id) VALUES (1, 1);
+INSERT INTO role_operation (role_id, operation_id) VALUES (1, 1);
 INSERT INTO role_operation (role_id, operation_id) VALUES (1, 2);
 INSERT INTO role_operation (role_id, operation_id) VALUES (2, 1);
 
